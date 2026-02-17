@@ -1,14 +1,13 @@
-# Usa l'immagine base PHP con Apache
 FROM php:8.2-apache
 
-# Installa l'estensione mysqli (necessaria per connettersi a MySQL)
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-# (Opzionale) Installa anche PDO per compatibilità futura
+# Installazione estensioni PDO per MySQL
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Copia il codice PHP nel container
-COPY ./src /var/www/html
+# Installazione di msmtp (client SMTP leggero)
+RUN apt-get update && apt-get install -y msmtp
 
-# Imposta la directory di lavoro
-WORKDIR /var/www/html
+# Configurazione di PHP per usare Mailpit
+# Nota: 'mailpit' è il nome del servizio definito nel docker-compose
+RUN echo "sendmail_path = \"/usr/bin/msmtp -t --host=mailpit --port=1025\"" > /usr/local/etc/php/conf.d/mail.ini
+
+RUN a2enmod rewrite

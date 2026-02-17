@@ -80,7 +80,8 @@ $stmt->execute([
     $userAgent
 ]);
 
-// LOG
+
+// COLLEGAMENTO SESSIONE A UTENTE
 if (isset($_SESSION['user_id'])) {
 
     $chk = $pdo->prepare("SELECT id FROM utenti WHERE id = ?");
