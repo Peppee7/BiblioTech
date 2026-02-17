@@ -1,10 +1,14 @@
 services:
   web:
-    image: php:8.2-apache
     build: .
     container_name: BiblioTech-PHP
     ports:
       - "${PORT_PHP}:80"
+    environment:
+      - DB_NAME=${DB}
+      - DB_USER=${USER}
+      - DB_PASS=${PASSWORD}
+      - DB_HOST=db
     volumes:
       - ./src:/var/www/html
     depends_on:
@@ -32,10 +36,18 @@ services:
       timeout: 5s
       retries: 5
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: BiblioTech-Mail
+    ports:
+      - "8025:8025" # vedere email
+      - "1025:1025" # inviare email
+    networks:
+      - app-network
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: admin-panel
-    restart: always
     ports:
       - "${PORT_ADMIN}:80"
     environment:
