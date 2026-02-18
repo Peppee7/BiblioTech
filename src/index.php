@@ -1,10 +1,10 @@
-<!-- <?php require 'conn.php'; ?> -->
+<?php require 'conn.php'; ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiblioTech — Biblioteca Digitale</title>
+    <title>BiblioTech - Biblioteca Digitale</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,7 +15,9 @@
 
 <header class="header">
     <div class="container header-inner">
-        <div class="logo">BiblioTech</div>
+        <div class="logo">
+            <a href="index.php">Biblio<span>Tech</span></a>
+        </div>
 
         <nav class="nav">           
                 <a href="register.php" class="btn-primary">Registrati</a>    
@@ -35,7 +37,7 @@
         </p>
 
         <div class="hero-actions">   
-                <a href="list.php" class="btn-primary">Vai al catalogo</a>      
+                <a href="dashboard.php" class="btn-primary">Vai al catalogo</a>      
         </div>
     </section>
 
