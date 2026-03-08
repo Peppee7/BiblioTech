@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         SELECT id FROM otp_sessions
         WHERE user_id  = ?
           AND otp_code = ?
-          AND usato    = 0
+          AND usato = 0
           AND scadenza > NOW()
         LIMIT 1
     ");
@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uStmt->execute([$userId]);
         $user = $uStmt->fetch();
 
-        $_SESSION['user_id']  = $user['id'];
-        $_SESSION['ruolo']    = $user['ruolo'];
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['ruolo'] = $user['ruolo'];
         $_SESSION['username'] = $user['username'];
 
         // COLLEGAMENTO SESSIONEA A UTENTE

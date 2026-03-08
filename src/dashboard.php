@@ -7,9 +7,9 @@ if (isset($_SESSION['user_id']) == false) {
     exit;
 }
 
-$uid      = (int) $_SESSION['user_id'];
-$ruolo    = $_SESSION['ruolo'];
-$isAdmin  = ($ruolo == 'admin');
+$uid = (int) $_SESSION['user_id'];
+$ruolo = $_SESSION['ruolo'];
+$isAdmin = ($ruolo == 'admin');
 
 if (isset($_SESSION['username'])) {
     $username = htmlspecialchars($_SESSION['username']);
@@ -37,8 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $row->execute([$pid]);
         $book = $row->fetch();
         if ($book) {
-            $pdo->prepare("UPDATE prestiti SET data_fine=NOW(), stato='restituito' WHERE id=?")->execute([$pid]);
-            $pdo->prepare("UPDATE libri SET quantita_disponibile = quantita_disponibile + 1 WHERE id=?")->execute([$book['id_libro']]);
+            $pdo->prepare("UPDATE prestiti SET data_fine=NOW(), stato='restituito' WHERE id=?")
+                ->execute([$pid]);
+
+            $pdo->prepare("UPDATE libri SET quantita_disponibile = quantita_disponibile + 1 WHERE id=?")
+                ->execute([$book['id_libro']]);
         }
         header("Location: dashboard.php?tab=loans&msg=returned"); 
         exit;
@@ -46,8 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // RECUPERO DATI
-$libri = $pdo->query("SELECT * FROM libri ORDER BY titolo ASC")->fetchAll();
+$libri = $pdo->query("SELECT * FROM libri ORDER BY titolo ASC")
+             ->fetchAll();
 $mieiLibri = [];
+
 if ($isAdmin == false) {
     $s = $pdo->prepare("SELECT id_libro FROM prestiti WHERE id_utente=? AND stato='attivo'");
     $s->execute([$uid]);
@@ -55,7 +60,8 @@ if ($isAdmin == false) {
 }
 
 if ($isAdmin == true) {
-    $prestitiAttivi = $pdo->query("SELECT p.id, u.username, l.titolo, p.data_inizio FROM prestiti p JOIN utenti u ON p.id_utente = u.id JOIN libri l ON p.id_libro = l.id WHERE p.stato = 'attivo' ORDER BY p.data_inizio ASC")->fetchAll();
+    $prestitiAttivi = $pdo->query("SELECT p.id, u.username, l.titolo, p.data_inizio FROM prestiti p JOIN utenti u ON p.id_utente = u.id JOIN libri l ON p.id_libro = l.id WHERE p.stato = 'attivo' ORDER BY p.data_inizio ASC")
+                          ->fetchAll();
 } else {
     $s = $pdo->prepare("SELECT l.titolo, l.autore, p.data_inizio, p.data_fine, p.stato FROM prestiti p JOIN libri l ON p.id_libro = l.id WHERE p.id_utente = ? ORDER BY p.data_inizio DESC");
     $s->execute([$uid]);
@@ -64,6 +70,7 @@ if ($isAdmin == true) {
 
 if (isset($_GET['tab'])) { $tab = $_GET['tab']; } else { $tab = ($isAdmin ? 'loans' : 'catalog'); }
 if (isset($_GET['msg'])) { $msg = $_GET['msg']; } else { $msg = ''; }
+
 ?>
 
 <!DOCTYPE html>
