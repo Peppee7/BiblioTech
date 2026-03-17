@@ -133,6 +133,7 @@ if (isset($_GET['msg'])) { $msg = $_GET['msg']; } else { $msg = ''; }
                             <div class="book-footer">
                                 <?php if (!$isAdmin): ?>
                                     <?php if ($disp > 0 && !$inPossesso): ?>
+                                        <button onclick="location.href='libro.php'" style="border-bottom: solid 5px white" class="btn-link btn-outline btn-submit">Descrizione</button>
                                         <form method="POST">
                                             <input type="hidden" name="libro_id" value="<?php echo $l['id']; ?>">
                                             <button type="submit" name="loan" class="btn-primary btn-submit">Prendi</button>
